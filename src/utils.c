@@ -1,7 +1,27 @@
 #include "utils.h"
+#include "string.h"
+
+#define COMAND_SIZE 8096
+
+
 
 void mysh_parse_command(const char* command,
                         int *argc, char*** argv)
 {
-  // TODO: Fill this!
+	char s[2] = {" "};
+	int count = 0;
+	char *token[COMMAND_SIZE/2] = {""};	// Max arguments' is COMMAND_SIZE / 2
+
+	token[count] = strtok(command, s);
+
+	while (token[count] != NULL) {
+		argv[count] = &token[count];
+		token[++count] = strtok(NULL, s);
+	}
+
+	argc = &count;
+
+	return;
+
+
 }
