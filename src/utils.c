@@ -11,8 +11,9 @@ void mysh_parse_command(const char* command,
 	char s[2] = {" "};
 	int count = 0;
 	char *token[COMMAND_SIZE/2] = {""};	// Max arguments' is COMMAND_SIZE / 2
+	const char *cp_command = *command;
 
-	token[count] = strtok(command, s);
+	token[count] = strtok(cp_command, s);
 
 	while (token[count] != NULL) {
 		argv[count] = &token[count];
