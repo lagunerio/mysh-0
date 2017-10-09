@@ -26,8 +26,10 @@ int do_pwd(int argc, char** argv) {
 }
 
 int validate_cd_argv(int argc, char** argv) {
-  
-//validate and change directory at the same time  
+
+  if (argc == 1) return 1; // Exception Handling : cd
+
+  // validate and change directory at the same time  
   return(chdir(argv[1]));
 }
 

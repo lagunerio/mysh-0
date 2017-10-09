@@ -16,11 +16,11 @@ void mysh_parse_command(const char *command, int *argc, char ***argv)
 	int len; // string length
 	char *token;
 
-	//strtok use commands as command; command is const variable
+	// strtok use commands as command; command is const variable
 	strcpy(commands, command); 
 	len = strlen(commands);
 
-	//Memory Allocation
+	// Memory Allocation
 	*argv = (char **)malloc(sizeof(char*)*len);
 
 	if (*argv == NULL) {
@@ -28,7 +28,9 @@ void mysh_parse_command(const char *command, int *argc, char ***argv)
 		return;
 	}
 
-	//Read first argument
+	(*argv)[0] = ""; // Exception handling : when blank entered
+
+	// Read first argument
 	token = strtok(commands, s);
 
 	while (token != NULL) {
