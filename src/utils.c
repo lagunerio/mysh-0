@@ -9,7 +9,7 @@
 void mysh_parse_command(const char *command, int *argc, char ***argv)
 {
 
-	char s[3] = { " \n" };
+	char s[4] = { " \n\t" };
 	char commands[COMMAND_SIZE];
 	char **arguments;
 	int count = 0;
