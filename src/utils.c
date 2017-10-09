@@ -1,27 +1,58 @@
 #include "utils.h"
 #include "string.h"
+#include <stdio.h>
+#include <malloc.h>
 
-#define COMAND_SIZE 8096
+#define COMMAND_SIZE 8096
 
 
-
-void mysh_parse_command(const char* command,
-                        int *argc, char*** argv)
+void mysh_parse_command(const char *command, int *argc, char ***argv)
 {
-	char s[2] = {" "};
+
+	char s[3] = { " \n" };
+	char commands[COMMAND_SIZE];
+	char **arguments;
 	int count = 0;
-	char *token[COMMAND_SIZE/2] = {""};	// Max arguments' is COMMAND_SIZE / 2
+	int len; // string length
+	char *token;
 
-	token[count] = strtok(command, s);
+	//strtok use commands as command; command is const variable
+	strcpy(commands, command); 
+	len = strlen(commands);
 
-	while (token[count] != NULL) {
-		argv[count] = &token[count];
-		token[++count] = strtok(NULL, s);
+	//Memory Allocation
+	*argv = (char **)malloc(sizeof(char*)*len);
+
+	if (*argv == NULL) {
+		fprintf(stderr, "no enough memory\n");
+		return;
 	}
 
-	argc = &count;
+	//Read first argument
+	token = strtok(commands, s);
+
+	while (token != NULL) {
+
+		(*argv)[count++] = strdup(token);
+		// Increase memory and free old memory when in error.
+		arguments = (char **)realloc(*argv, sizeof(char*)*len*(count + 1));
+		*argv = arguments;
+
+		if (arguments == NULL) {
+			fprintf(stderr, "no enough memory\n");
+			// Free old memory.
+			for (int i = 0; i < count; i++) {
+				free((*argv)[i]);
+			}
+			free(*argv);
+			return;
+		}
+		// Read next argument
+		token = strtok(NULL, s);
+	}
+
+	*argc = count;
 
 	return;
-
 
 }
