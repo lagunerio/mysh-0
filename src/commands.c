@@ -27,6 +27,18 @@ int do_pwd(int argc, char** argv) {
 
 int validate_cd_argv(int argc, char** argv) {
 
+  // Exception handling : cd .. (go upper directory)
+  char * path = argv[1];
+  char cwd[256], p_backslash[256];
+
+  if (strncmp(path, "..", 2) == 0) {
+      getcwd(cwd, sizeof(cwd));
+      strncpy(p_backslash, strrchr(cwd, '/'), 256);
+      cwd[strlen(cwd) - strlen(p_backslash)] = '\0';
+      chdir(cwd);
+      return 1;
+   }
+
   if (argc == 1) return 1; // Exception Handling : cd
 
   // validate and change directory at the same time  
